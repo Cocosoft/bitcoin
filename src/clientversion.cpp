@@ -102,8 +102,12 @@ std::string FormatSubVersion(const std::string& name, int nClientVersion, const 
     }
     ss << "/";
     if (!fBaseNameOnly) {
-        if (GetBoolArg("-bip148", DEFAULT_BIP148))
+        if (GetBoolArg("-bip148", DEFAULT_BIP148) && !GetBoolArg("-bip91", DEFAULT_BIP91))
             ss << "UASF-Segwit:1.0(BIP148)/";
+        else if (GetBoolArg("-bip148", DEFAULT_BIP148) && GetBoolArg("-bip91", DEFAULT_BIP91))
+            ss << "UASF-Segwit:1.0(BIP148; BIP91)/";
+        else if (!GetBoolArg("-bip148", DEFAULT_BIP148) && GetBoolArg("-bip91", DEFAULT_BIP91))
+            ss << "UASF-Segwit:1.0(!BIP148; BIP91)/";
         else
             ss << "UASF-Segwit:1.0(!BIP148)/";
     }
